@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Shortener</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .error {
+      background-color: #ffe6e6;
+      color: #c0392b;
+    }
+
+    .success {
+      background-color: #e8f8f5;
+      color: #1e8449;
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    thead {
+      background: #007bff;
+      color: #fff;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+      word-break: break-all;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .short-id {
+      font-weight: bold;
+      color: #007bff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>URL Shortener</h1>
+
+    <% if (error) { %>
+      <div class="message error">
+        <%= error %>
+      </div>
+    <% } %>
+
+    <% if (success) { %>
+      <div class="message success">
+        <%= success %>
+      </div>
+    <% } %>
+
+    <% if (id) { %>
+      <p style="text-align:center;">
+        Generated Short ID:
+        <span class="short-id"><%= id %></span>
+      </p>
+    <% } %>
+
+    <form method="post" action="/url">
+      <input type="text" placeholder="https://www.example.com" name="url" />
+      <button type="submit">Shorten</button>
+    </form>
+
+    <% if (all && all.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Short ID</th>
+            <th>Original URL</th>
+            <th>Total Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% all.forEach(urls => { %>
+            <tr>
+              <td class="short-id"><%= urls.shortId %></td>
+              <td><%= urls.redirectURL %></td>
+              <td><%= urls.visit.length %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+  </div>
+</body>
+</html>
